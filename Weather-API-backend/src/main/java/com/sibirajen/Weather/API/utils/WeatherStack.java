@@ -17,7 +17,7 @@ public class WeatherStack {
         String language = "en";
 
         try {
-            return new URI(baseUrl + "?access_key=" +  apiKey + "&query=" + encodedCity + "&units="+ units + "&language=" + language);
+            return new URI(baseUrl + "?access_key=" +  apiKey + "&query=" + encodedCity);
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }

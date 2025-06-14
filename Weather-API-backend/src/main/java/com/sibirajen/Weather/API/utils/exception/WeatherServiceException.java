@@ -1,4 +1,4 @@
-package com.sibirajen.Weather.API.exception;
+package com.sibirajen.Weather.API.utils.exception;
 
 import com.sibirajen.Weather.API.service.WeatherService;
 

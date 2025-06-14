@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 
-function WeatherCard() {
+function WeatherCard({ city }) {
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchWeather() {
       try {
-        const response = await fetch("http://localhost:8080/api/v1/weather/chennai");
+        const url = `http://localhost:8080/api/v1/weather/${city}`; // ✅ Added `const` for the `url` variable
+        const response = await fetch(url);
 
         if (!response.ok) {
           console.error("Server error:", response.status);
@@ -18,7 +19,7 @@ function WeatherCard() {
         const data = await response.json();
         console.log("Weather data:", data);
 
-        const conditionText = data.current.weather_descriptions[0].toLowerCase();
+        const conditionText = data.current.weather_descriptions?.[0]?.toLowerCase() || ""; // ✅ Added optional chaining and fallback to avoid errors
 
         let weatherClass = "default";
         if (conditionText.includes("sunny") || conditionText.includes("clear")) {
@@ -35,15 +36,14 @@ function WeatherCard() {
           weatherClass = "night";
         }
 
-        // Set the background class on the body
         document.body.className = weatherClass;
 
         setWeather({
           location: `${data.location.name}, ${data.location.country}`,
           time: data.location.localtime,
           temperature: data.current.temperature,
-          condition: data.current.weather_descriptions[0],
-          iconUrl: data.current.weather_icons[0],
+          condition: data.current.weather_descriptions?.[0], // ✅ Optional chaining to avoid crashes
+          iconUrl: data.current.weather_icons?.[0],          // ✅ Optional chaining to avoid crashes
           humidity: data.current.humidity,
           windSpeed: data.current.wind_speed,
         });
@@ -55,13 +55,14 @@ function WeatherCard() {
       }
     }
 
-    fetchWeather();
+    if (city) {
+      fetchWeather(); // ✅ Only fetch if `city` is provided
+    }
 
-    // Cleanup on component unmount: reset background
     return () => {
       document.body.className = "default";
     };
-  }, []);
+  }, [city]); // ✅ Added `city` as a dependency so it re-runs when the city changes
 
   if (loading)
     return <div className="weather-card">Loading weather data...</div>;

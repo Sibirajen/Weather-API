@@ -1,8 +1,17 @@
 import './App.css'
-import WeatherCard from './component/WeatherCard'
+import { useState } from "react";
+import SearchBar from "./component/SearchBar";
+import WeatherCard from "./component/WeatherCard";
 
 function App() {
-  return (<WeatherCard/>)
+  const [city, setCity] = useState("New York");
+
+  return (
+    <div className="app">
+      <SearchBar onSearch={setCity} />
+      <WeatherCard city={city} />
+    </div>
+  );
 }
 
-export default App
+export default App;
