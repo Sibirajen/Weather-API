@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sibirajen.Weather.API.dto.WeatherResponse;
 import com.sibirajen.Weather.API.utils.exception.WeatherServiceException;
 import com.sibirajen.Weather.API.utils.WeatherStack;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ import java.time.Duration;
 
 @Service
 public class WeatherService {
-
+    @Cacheable(value = "Weather", key = "#city.toUpperCase()")
     public WeatherResponse getWeather(String city) {
         URI uri = WeatherStack.getURL(city);
         System.out.println(uri);
