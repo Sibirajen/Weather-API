@@ -22,7 +22,7 @@ public class WeatherController {
 
     @GetMapping("/api/v1/weather/{city}")
     public ResponseEntity<WeatherResponse> helloWorld(@PathVariable String city){
-        System.out.print("Endpoint : ");
+        System.out.println("Endpoint : ");
         return ResponseEntity.ok(service.getWeather(city));
     }
 }

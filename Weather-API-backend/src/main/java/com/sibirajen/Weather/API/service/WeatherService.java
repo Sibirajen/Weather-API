@@ -16,7 +16,7 @@ import java.time.Duration;
 
 @Service
 public class WeatherService {
-    @Cacheable(value = "Weather", key = "#city.toUpperCase()")
+    @Cacheable(value = "Weather", keyGenerator = "cityKeyGenerator")
     public WeatherResponse getWeather(String city) {
         URI uri = WeatherStack.getURL(city);
         System.out.println(uri);
